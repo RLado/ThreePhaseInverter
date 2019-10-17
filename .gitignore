@@ -1,0 +1,13 @@
+#Files
+*.lof
+*.aux
+*.log
+*.synctex.gz
+*.fdb_latexmk
+*.lot
+*.fls
+*.out
+*.toc
+*.pdf
+
+#Directories
