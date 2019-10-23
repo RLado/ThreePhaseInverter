@@ -11,4 +11,5 @@
 *.pdf
 
 #Directories
-/slprj
+*/slprj
+*/R2017b
