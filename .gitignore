@@ -9,6 +9,7 @@
 *.out
 *.toc
 *.pdf
+Autocommit.sh
 
 #Directories
 */slprj
