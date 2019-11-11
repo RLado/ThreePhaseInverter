@@ -10,6 +10,8 @@
 *.toc
 *.pdf
 Autocommit.sh
+.slxc
+.autosave
 
 #Directories
 */slprj
