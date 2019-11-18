@@ -37,7 +37,7 @@
   %Parks current transform code
   \begin{lstlisting}[language=Octave]
     function Iparks=parks_current(I,theta)
-      Iparks=2/3*[cos(theta),cos(theta-120/180*pi),cos(theta+120/180*pi);
+      Iparks=sqrt(2/3)*[cos(theta),cos(theta-120/180*pi),cos(theta+120/180*pi);
         sin(theta),sin(theta-120/180*pi),sin(theta+120/180*pi);
         .5,.5,.5]*I;
   \end{lstlisting}

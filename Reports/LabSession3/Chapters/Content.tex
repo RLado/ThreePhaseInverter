@@ -5,7 +5,7 @@
 
 \chapter{Introduction}
 
-  The second lab session has consisted in the implementation of the inverter's control, including the necessary Park's transforms and the PWM generator. The control is not currently working and will be fixed on the next session. The following is a summary of the work carried out on this second session.\\
+  During the third lab session the control has been fixed and refined and the power readings Simulink submodule has been added. The following is a brief summary of the work carried out on this third session. The final results of this lab sessions will be presented on the final report.\\
 
   \begin{figure}[H]
     \centering
@@ -16,82 +16,46 @@
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{Images/S2_Model.png}
-    \caption{Final model after the second lab session}
-    \label{S1Model}
+    \includegraphics[width=.8\linewidth]{Images/FinalResult.png}
+    \caption{Final model after the third lab session}
+    \label{S3Model}
   \end{figure}
 
 
-\chapter{Park's Transform}
+\chapter{Fixing and tuning the control}
 
-  The model equations written in abc components from a non-linear system with differential equations have no analytical solution. Thus, it is necessary to change this equations by means of a transformation in order to remove the equations dependence on the mechanical angle to obtain a lineal system.\\
-  We are transforming the abc components to dq components in a rotating frame of reference.\\
+  One of the more important parts of this session was to debug the control. PI constants aside, the biggest problem I was facing was related to the sample time of the simulation, which was set to auto meaning that the model would go out of control due to an uncontrolled time step. This does not mean I changed the converter's frequency to get better results, but I changed the simulation parameters so that the model can run with less error. However this change implies the simulation is now much more expensive in terms of computing in exchange for accuracy.\\
+
+  The following is a comparison with no changes to the model, constants or otherwise, of the impact the simulation sample time has on its results.
 
   \begin{figure}[H]
-    \centering
-    \includegraphics[width=.8\linewidth]{Images/ParksCurrentModel.png}
-    \caption{Current Park's transform}
-    \label{CurrentTransform}
+      \centering
+      \subfloat[Sample time: 1e-4s]{{\includegraphics[width=.45\linewidth]{Images/bad1e4Sample_V_DC-side.png} }}%
+      \qquad
+      \subfloat[Sample time: 1e-5s]{{\includegraphics[width=.45\linewidth]{Images/bad1e5Sample_V_DC-side.png} }}%
+
+      \centering
+      \subfloat[Sample time: 1e-6s]{{\includegraphics[width=.45\linewidth]{Images/bad1e6Sample_V_DC-side.png} }}%
+      \qquad
+      \subfloat[Sample time: 1e-7s]{{\includegraphics[width=.45\linewidth]{Images/1e7V_DC-side.png} }}%
+      \caption{Simulation of the voltage read on the DC bus only changing simulation sample time}%
+      \label{SampleTimeComp}%
   \end{figure}
 
-  %Parks current transform code
-  \begin{lstlisting}[language=Octave]
-    function Iparks=parks_current(I,theta)
-      Iparks=2/3*[cos(theta),cos(theta-120/180*pi),cos(theta+120/180*pi);
-        sin(theta),sin(theta-120/180*pi),sin(theta+120/180*pi);
-        .5,.5,.5]*I;
-  \end{lstlisting}
+  Finally, I decided to settle for the 1e-7s sample time given that I have enough memory and CPU power to avoid compromising the results.\\
+
+  After the sample time issue was solved the PI controller was much simpler to adjust given that changes on the constants made actual logical sense.\\
+
+\chapter{Power measuraments}
+
+  Finally I added to the model a Simulink subsystem that measures the active and reactive power.
+
+  \[ p(t)=v_d*i_d+v_q*i_q \]
+  \[ q(t)=v_q*i_d-v_d*i_q \]
 
   \begin{figure}[H]
     \centering
-    \includegraphics[width=.8\linewidth]{Images/ParksVoltage.png}
-    \caption{Voltage Park's transform}
-    \label{AC-side_eq}
-  \end{figure}
-
-  %Parks voltage transform code
-  \begin{lstlisting}[language=Octave]
-    function Vparks=parks_voltage(V,t,omega)
-        Vparks=sqrt(2/3)*[1/sqrt(2),1/sqrt(2),1/sqrt(2);
-            cos(omega*t),cos(omega*t-(2*pi)/(3)),cos(omega*t+(2*pi)/(3));
-            -sin(omega*t),-sin(omega*t-(2*pi)/(3)),-sin(omega*t+(2*pi)/(3))]*V;
-  \end{lstlisting}
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=.8\linewidth]{Images/InverseParksVoltage.png}
-    \caption{Inverse voltage Park's transform}
-    \label{AC-side_Simulink}
-  \end{figure}
-
-  %Parks inverse voltage transform code
-  \begin{lstlisting}[language=Octave]
-    function V=inverse_parks_voltage(Vparks,t,omega)
-      V=sqrt(2/3)*[1/sqrt(2),1/sqrt(2),1/sqrt(2);
-          cos(omega*t),cos(omega*t-(2*pi)/(3)),cos(omega*t+(2*pi)/(3));
-          -sin(omega*t),-sin(omega*t-(2*pi)/(3)),-sin(omega*t+(2*pi)/(3))]\Vparks;
-  \end{lstlisting}
-
-
-\chapter{Modelling the PWM}
-
-  The PWM genarator is used to trigger the IGBTs fiering in order to operate the inverter. The PWM is generated by comparing two signals scaled between -1 and 1, one of the signals is a sine wave obtained from the inverters dq voltages and the other is a triangular signal who's frequency is the same as the inverters switching frequency.\\
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{Images/PWM.png}
-    \caption{PWM generator}
-    \label{PWM}
-  \end{figure}
-
-
-\chapter{Modelling the inverters control}
-
-  Finally, the inverters control has also been modeled, however it is still not working as it should and will be fixed on the next session.
-
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{Images/InverterControl.png}
-    \caption{Inverter's control model}
-    \label{Control}
+    \includegraphics[width=.8\linewidth]{Images/PowerSubmodule.png}
+    \caption{Power measurament submodule}
+    \label{PowerSubmodule}
   \end{figure}
