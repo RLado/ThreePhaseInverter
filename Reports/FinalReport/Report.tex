@@ -21,7 +21,7 @@
 \usepackage[pdftex,  %PDF file metadata
 pdfauthor={Ricard Lado Roige},
 pdftitle={Report},
-pdfsubject={Lab sessions: Control of a three-phase inverter connected to the grid},
+pdfsubject={Lab sessions: control of a three-phase inverter connected to the grid},
 pdfkeywords={},
 pdfproducer={Atom on Linux},
 pdfcreator={pdfLatex with hyperref},
@@ -56,6 +56,15 @@ bookmarks]{hyperref}
 	\chapter{Introduction}
 	\subfile{Chapters/Chapter1}
 
+	\chapter{Model implementation}
+	\subfile{Chapters/Chapter2}
+
+	\chapter{Results}
+	\subfile{Chapters/Chapter3}
+
+	\chapter{Conclusions}
+	\subfile{Chapters/Chapter4}
+
 
 	%%%%%%%%%%%%%%%%%%%%%%%  Bibliography  %%%%%%%%%%%%%%%%%%%
 	% The following produces a numbered bibliography where the numbers
@@ -63,8 +72,23 @@ bookmarks]{hyperref}
 	\specialhead{Bibliography}
 	\begin{singlespace}
 		\begin{thebibliography}{99}
-			\subfile{Chapters/Bibliografia}
+			\subfile{Chapters/Bibliography}
 		\end{thebibliography}
 	\end{singlespace}
+
+	%%%%%%%%%%%%%%%%%%%%%%%  Appendices  %%%%%%%%%%%%%%%%%%%
+	\appendix
+
+	\chapter{Report of lab session 1}
+	\label{S1Report}
+	\includepdf[pages=-]{Chapters/S1_Report.pdf}
+
+	\chapter{Report of lab session 2}
+	\label{S2Report}
+	\includepdf[pages=-]{Chapters/S2_Report.pdf}
+
+	\chapter{Report of lab session 3}
+	\label{S3Report}
+	\includepdf[pages=-]{Chapters/S3_Report.pdf}
 
 \end{document}

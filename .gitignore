@@ -12,6 +12,10 @@
 Autocommit.sh
 *.slxc
 *.autosave
+*.fig
+!/Reports/FinalReport/Chapters/S1_Report.pdf
+!/Reports/FinalReport/Chapters/S2_Report.pdf
+!/Reports/FinalReport/Chapters/S3_Report.pdf
 
 #Directories
 */slprj
